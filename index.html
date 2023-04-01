@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>birds-hunt</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+	<style>
+		.target {
+			width: 70px;
+			height: 70px;
+			background-size: 100% 100%;
+			position: absolute;
+		}
+	</style>
+</head>
+<body style="background-image: url(fon.png); background-size: 100%;">
+	<h1 class="text-center" style="font-family: Arial;">Score: <span class="scoreBox"></span></h1>
+	<button class="btn btn-primary px-3" style="margin-left: 914px; font-family: Arial;">Начать</button>
+	<script type="text/javascript">
+		let posY = [150, 380, 610];
+		let types = ['bad', 'good'];
+		let score = 0;
+		let scoreBox = document.querySelector('.scoreBox');
+		let btn = document.querySelector('.btn');
+		let interv;
+
+
+		let createObj = function() {
+			let obj = document.createElement('div');
+			document.body.appendChild(obj);
+			obj.classList.add('target');
+			randomX = Math.round(Math.random()*1500);
+			obj.style.left = randomX + "px";
+			indexY = Math.round(Math.random()*2);
+			obj.style.top = posY[indexY] + "px";
+
+			let typeIndex = Math.round(Math.random()*1);
+			obj.myType = types[typeIndex];
+
+			if(obj.myType == 'good') {
+				obj.style.backgroundImage = "url(ptisa.png)";
+			}else if(obj.myType == 'bad') {
+				obj.style.backgroundImage = "url(orel.png)";
+			}
+
+			obj.onclick = function() {
+				obj.style.display = 'none';
+				if(obj.myType == 'good') {
+					score = score + 1;
+					scoreBox.innerHTML = score;
+				}else if(obj.myType == 'bad') {
+					score = score - 1;
+					scoreBox.innerHTML = score;
+				}
+			}
+		}
+
+
+		let finish = function() {
+			clearInterval(interv);
+			if(score > 8) {
+				alert('You win!');
+			}else if(score < 8) {
+				alert('You lose');
+			}
+		}
+
+	
+		btn.onclick = function() {
+			interv = setInterval(createObj, 600);
+			btn.style.display = 'none';
+			setTimeout(finish, 6500);
+		}
+	</script>
+</body>
+</html>
